@@ -1,0 +1,203 @@
+openapi: 3.0.3
+info:
+  title: MeMaS APIs
+  description: |-
+    This is the Control Plane and Data Plane APIs for MeMaS (Memory Management Service).
+  # termsOfService: http://swagger.io/terms/
+  contact:
+    email: max.yu@memas.ai
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 0.1.0
+externalDocs:
+  description: Find out more about MeMaS
+  url: http://memas.ai
+# servers:
+#   - url: https://petstore3.swagger.io/api/v3
+tags:
+  - name: cp
+    description: Control Plane APIs for Admins
+    # externalDocs:
+    #   description: Find out more
+    #   url: http://memas.ai
+  - name: dp
+    description: Data Plane APIs for Chatbots
+    # externalDocs:
+    #   description: Find out more about our store
+    #   url: http://memas.ai
+paths:
+  /dp/remember:
+    post:
+      tags:
+        - dp
+      summary: Memorize information
+      description: Memorize information
+      operationId: remember
+      requestBody:
+        description: "Remember the following information"
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CitedDocument'
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/OperationSuccess'
+      # security:
+      #   - petstore_auth:
+      #       - write:pets
+      #       - read:pets
+  /dp/recollect:
+    post:
+      tags:
+        - dp
+      summary: Recollects
+      description: ''
+      operationId: recollect
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clue:
+                  type: string
+                  example: "What's the weather?"
+                corpus_pathname:
+                  $ref: '#/components/schemas/CorpusPathname'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CitedDocument'
+      # security:
+      #   - petstore_auth:
+      #       - write:pets
+      #       - read:pets
+  /cp/create_user:
+    post:
+      tags:
+        - cp
+      summary: Create user
+      description: Create a namespace user
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                namespace_pathname:
+                  $ref: '#/components/schemas/NamespacePathname'
+      responses:
+        '200':
+          $ref: '#/components/responses/OperationSuccess'
+  /cp/create_corpus:
+    post:
+      tags:
+        - cp
+      summary: Create corpus
+      description: Create a corpus under a namespace
+      operationId: createCorpus
+      requestBody:
+        # description: Created user object
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                corpus_pathname:
+                  type: string
+                  example: "memas.wikipedia"
+                  description: full corpus name
+                corpus_type:
+                  $ref: '#/components/schemas/CorpusType'
+      responses:
+        '200':
+          $ref: '#/components/responses/OperationSuccess'
+
+components:
+  schemas:
+    Citation:
+      type: object
+      properties:
+        source_uri:
+          type: string
+          example: "https://github.com/memas-ai/MeMaS"
+        source_name:
+          type: string
+          example: "github"
+        document_name:
+          type: string
+          example: "MeMaS Readme"
+        description:
+          type: string
+          example: "A Memory Management Service"
+    CitedDocument:
+      type: object
+      properties:
+        document:
+          type: string
+          example: |-
+            "A world has two moons and three suns. And some people love dreaming 
+            during daytime."
+        citation:
+          $ref: '#/components/schemas/Citation'
+    CorpusType:
+      type: string
+      description: Type of a Corpus
+      enum:
+        - "knowledge"
+        - "conversation"
+    CorpusPathname:
+      type: string
+      description: |-
+        "Full name of a corpus, specifying which namespace the corpus is under. 
+        The name takes on the format of \"<namespace_pathname>:<corpus_name>\""
+      example: "memas:wikipedia"
+    NamespacePathname:
+      type: string
+      description: |-
+        "Full namespace name, where child namespaces are appended after their parents'
+        names with '.'"
+      example: "memas.chatbot.persona1"
+
+  # requestBodies:
+  #   Document:
+  #     description: Pet object that needs to be added to the store
+  #     content:
+  #       application/json:
+  #         schema:
+  #           $ref: '#/components/schemas/Citation'
+  responses:
+    OperationSuccess:
+      description: "Successful Operation"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+  # securitySchemes:
+  #   petstore_auth:
+  #     type: oauth2
+  #     flows:
+  #       implicit:
+  #         authorizationUrl: https://petstore3.swagger.io/oauth/authorize
+  #         scopes:
+  #           write:pets: modify pets in your account
+  #           read:pets: read your pets
+  #   api_key:
+  #     type: apiKey
+  #     name: api_key
+  #     in: header

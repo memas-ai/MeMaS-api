@@ -1,0 +1,119 @@
+openapi: 3.0.3
+info:
+  title: MeMaS DP APIs
+  description: |-
+    This is the Data Plane APIs for MeMaS (Memory Management Service).
+  # termsOfService: http://swagger.io/terms/
+  contact:
+    email: max.yu@memas.ai
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 0.1.0
+externalDocs:
+  description: Find out more about MeMaS
+  url: http://memas.ai
+# servers:
+#   - url: https://petstore3.swagger.io/api/v3
+tags:
+  - name: dp
+    description: Data Plane APIs for Chatbots
+    # externalDocs:
+    #   description: Find out more about our store
+    #   url: http://memas.ai
+paths:
+  /dp/remember:
+    post:
+      tags:
+        - dp
+      summary: Memorize information
+      description: Memorize information
+      operationId: remember
+      requestBody:
+        description: "Remember the following information"
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CitedDocument'
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/OperationSuccess'
+      # security:
+      #   - petstore_auth:
+      #       - write:pets
+      #       - read:pets
+  /dp/recollect:
+    post:
+      tags:
+        - dp
+      summary: Recollects
+      description: ''
+      operationId: recollect
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clue:
+                  type: string
+                  example: "What's the weather?"
+                corpus_pathname:
+                  $ref: '#/components/schemas/CorpusPathname'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CitedDocument'
+
+components:
+  schemas:
+    Citation:
+      type: object
+      properties:
+        source_uri:
+          type: string
+          example: "https://github.com/memas-ai/MeMaS"
+        source_name:
+          type: string
+          example: "github"
+        document_name:
+          type: string
+          example: "MeMaS Readme"
+        description:
+          type: string
+          example: "A Memory Management Service"
+    CitedDocument:
+      type: object
+      properties:
+        document:
+          type: string
+          example: |-
+            "A world has two moons and three suns. And some people love dreaming 
+            during daytime."
+        citation:
+          $ref: '#/components/schemas/Citation'
+    CorpusPathname:
+      type: string
+      description: |-
+        "Full name of a corpus, specifying which namespace the corpus is under. 
+        The name takes on the format of \"<namespace_pathname>:<corpus_name>\""
+      example: "memas:wikipedia"
+
+  responses:
+    OperationSuccess:
+      description: "Successful Operation"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true

@@ -1,0 +1,100 @@
+openapi: 3.0.3
+info:
+  title: MeMaS CP APIs
+  description: |-
+    This is the Control Plane APIs for MeMaS (Memory Management Service).
+  # termsOfService: http://swagger.io/terms/
+  contact:
+    email: max.yu@memas.ai
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 0.1.0
+externalDocs:
+  description: Find out more about MeMaS
+  url: http://memas.ai
+# servers:
+#   - url: https://petstore3.swagger.io/api/v3
+tags:
+  - name: cp
+    description: Control Plane APIs for Admins
+    # externalDocs:
+    #   description: Find out more
+    #   url: http://memas.ai
+paths:
+  /cp/create_user:
+    post:
+      tags:
+        - cp
+      summary: Create user
+      description: Create a namespace user
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                namespace_pathname:
+                  $ref: '#/components/schemas/NamespacePathname'
+      responses:
+        '200':
+          $ref: '#/components/responses/OperationSuccess'
+  /cp/create_corpus:
+    post:
+      tags:
+        - cp
+      summary: Create corpus
+      description: Create a corpus under a namespace
+      operationId: createCorpus
+      requestBody:
+        # description: Created user object
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                corpus_pathname:
+                  type: string
+                  example: "memas.wikipedia"
+                  description: full corpus name
+                corpus_type:
+                  $ref: '#/components/schemas/CorpusType'
+      responses:
+        '200':
+          $ref: '#/components/responses/OperationSuccess'
+
+components:
+  schemas:
+    CorpusType:
+      type: string
+      description: Type of a Corpus
+      enum:
+        - "knowledge"
+        - "conversation"
+    CorpusPathname:
+      type: string
+      description: |-
+        "Full name of a corpus, specifying which namespace the corpus is under. 
+        The name takes on the format of \"<namespace_pathname>:<corpus_name>\""
+      example: "memas:wikipedia"
+    NamespacePathname:
+      type: string
+      description: |-
+        "Full namespace name, where child namespaces are appended after their parents'
+        names with '.'"
+      example: "memas.chatbot.persona1"
+
+  responses:
+    OperationSuccess:
+      description: "Successful Operation"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
