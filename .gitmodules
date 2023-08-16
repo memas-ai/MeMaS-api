@@ -1,0 +1,24 @@
+[submodule "memas-clients/python"]
+	path = memas-clients/python
+	url = https://github.com/memas-ai/MeMaS-python-client.git
+[submodule "memas-sdks/python"]
+	path = memas-sdks/python
+	url = https://github.com/memas-ai/MeMaS-python-sdk.git
+[submodule "memas-clients/go"]
+	path = memas-clients/go
+	url = https://github.com/memas-ai/MeMaS-go-client.git
+[submodule "memas-clients/java"]
+	path = memas-clients/java
+	url = https://github.com/memas-ai/MeMaS-java-client.git
+[submodule "memas-clients/ts-node"]
+	path = memas-clients/ts-node
+	url = https://github.com/memas-ai/MeMaS-ts-client.git
+[submodule "memas-sdks/java"]
+	path = memas-sdks/java
+	url = https://github.com/memas-ai/MeMaS-java-sdk.git
+[submodule "memas-sdks/go"]
+	path = memas-sdks/go
+	url = https://github.com/memas-ai/MeMaS-go-sdk.git
+[submodule "memas-sdks/ts-node"]
+	path = memas-sdks/ts-node
+	url = https://github.com/memas-ai/MeMaS-ts-sdk.git
