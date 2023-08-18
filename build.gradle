@@ -24,23 +24,58 @@ def cpInputSpec = "$rootDir/memas-api/cp.yml"
 def dpOutputDir = "$rootDir/memas-clients"
 def cpOutputDir = "$rootDir/memas-sdks"
 
+def clientVersion = "0.1.0"
+def sdkVersion = "0.1.0"
+
 
 task javaClient(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
     generatorName.set("java")
     inputSpec.set(dpInputSpec)
     outputDir.set("$dpOutputDir/java")
-    apiPackage.set("ai.memas.memas_client.api")
-    invokerPackage.set("ai.memas.memas_client.invoker")
-    modelPackage.set("ai.memas.memas_client.model")
+    apiPackage.set("ai.memas.memasclient.api")
+    invokerPackage.set("ai.memas.memasclient.invoker")
+    modelPackage.set("ai.memas.memasclient.model")
+
+    configOptions.set([
+        artifactId: "memas-client",
+        artifactUrl: "https://github.com/memas-ai/MeMaS-java-client",
+        artifactVersion: clientVersion,
+        developerEmail: "max.yu@memas.ai",
+        developerName: "MeMaS Contributors",
+        developerOrganization: "memas.ai",
+        developerOrganizationUrl: "http://memas.ai",
+        groupId: "ai.memas",
+        licenseName: "Apache License 2.0",
+        licenseUrl: "https://www.apache.org/licenses/LICENSE-2.0.txt",
+        scmConnection: "scm:git:git@github.com:memas-ai/MeMaS-java-client.git",
+        scmDeveloperConnection: "scm:git:git@github.com:memas-ai/MeMaS-java-client.git",
+        scmUrl: "https://github.com/memas-ai/MeMaS-java-client",
+    ])
 }
 
 task javaSDK(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
     generatorName.set("java")
     inputSpec.set(cpInputSpec)
     outputDir.set("$cpOutputDir/java")
-    apiPackage.set("ai.memas.memas_sdk.api")
-    invokerPackage.set("ai.memas.memas_sdk.invoker")
-    modelPackage.set("ai.memas.memas_sdk.model")
+    apiPackage.set("ai.memas.memassdk.api")
+    invokerPackage.set("ai.memas.memassdk.invoker")
+    modelPackage.set("ai.memas.memassdk.model")
+
+    configOptions.set([
+        artifactId: "memas-sdk",
+        artifactUrl: "https://github.com/memas-ai/MeMaS-java-sdk",
+        artifactVersion: sdkVersion,
+        developerEmail: "max.yu@memas.ai",
+        developerName: "MeMaS Contributors",
+        developerOrganization: "memas.ai",
+        developerOrganizationUrl: "http://memas.ai",
+        groupId: "ai.memas",
+        licenseName: "Apache License 2.0",
+        licenseUrl: "https://www.apache.org/licenses/LICENSE-2.0.txt",
+        scmConnection: "scm:git:git@github.com:memas-ai/MeMaS-java-sdk.git",
+        scmDeveloperConnection: "scm:git:git@github.com:memas-ai/MeMaS-java-sdk.git",
+        scmUrl: "https://github.com/memas-ai/MeMaS-java-sdk",
+    ])
 }
 
 
@@ -48,14 +83,22 @@ task pythonClient(type: org.openapitools.generator.gradle.plugin.tasks.GenerateT
     generatorName.set("python")
     inputSpec.set(dpInputSpec)
     outputDir.set("$dpOutputDir/python")
-    packageName.set("memas_client")
+
+    configOptions.set([
+        packageName: "memas_client",
+        packageVersion: clientVersion,
+    ])
 }
 
 task pythonSDK(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
     generatorName.set("python")
     inputSpec.set(cpInputSpec)
     outputDir.set("$cpOutputDir/python")
-    packageName.set("memas_sdk")
+
+    configOptions.set([
+        packageName: "memas_sdk",
+        packageVersion: sdkVersion,
+    ])
 }
 
 
@@ -65,7 +108,8 @@ task tsNodeClient(type: org.openapitools.generator.gradle.plugin.tasks.GenerateT
     outputDir.set("$dpOutputDir/ts-node")
 
     configOptions.set([
-        npmName: "memas-client"
+        npmName: "memas-client",
+        npmVersion: clientVersion,
     ])
 }
 
@@ -75,7 +119,8 @@ task tsNodeSDK(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask
     outputDir.set("$cpOutputDir/ts-node")
 
     configOptions.set([
-        npmName: "memas-sdk"
+        npmName: "memas-sdk",
+        npmVersion: sdkVersion,
     ])
 }
 
@@ -86,7 +131,8 @@ task goClient(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask)
     outputDir.set("$dpOutputDir/go")
 
     configOptions.set([
-        packageName: "memas-client"
+        packageName: "memas-client",
+        packageVersion: clientVersion,
     ])
 }
 
@@ -96,6 +142,30 @@ task goSDK(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
     outputDir.set("$cpOutputDir/go")
 
     configOptions.set([
-        packageName: "memas-sdk"
+        packageName: "memas-sdk",
+        packageVersion: sdkVersion,
+    ])
+}
+
+
+task rustClient(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
+    generatorName.set("rust")
+    inputSpec.set(dpInputSpec)
+    outputDir.set("$dpOutputDir/rust")
+
+    configOptions.set([
+        packageName: "memas-client",
+        packageVersion: clientVersion,
+    ])
+}
+
+task rustSDK(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
+    generatorName.set("rust")
+    inputSpec.set(cpInputSpec)
+    outputDir.set("$cpOutputDir/rust")
+
+    configOptions.set([
+        packageName: "memas-sdk",
+        packageVersion: sdkVersion,
     ])
 }

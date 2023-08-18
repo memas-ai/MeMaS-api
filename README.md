@@ -7,5 +7,6 @@ Currently we generated clients and sdks for the following languages:
 - Python
 - Typescript (Node)
 - Go
+- Rust
 
 They have each been cloned as submodules in this repo. Running commands like `./gradlew javaClient` or `./gradlew javaSDK` will regenerate these packages.
