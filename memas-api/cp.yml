@@ -2,7 +2,8 @@ openapi: 3.0.3
 info:
   title: MeMaS CP APIs
   description: |-
-    This is the Control Plane APIs for MeMaS (Memory Management Service).
+    This is the Control Plane client for MeMaS (Memory Management Service). 
+    See https://github.com/memas-ai/MeMaS for more details.
   # termsOfService: http://swagger.io/terms/
   contact:
     email: max.yu@memas.ai
@@ -35,6 +36,8 @@ paths:
           application/json:
             schema:
               type: object
+              required:
+                - "namespace_pathname"
               properties:
                 namespace_pathname:
                   $ref: '#/components/schemas/NamespacePathname'
@@ -55,6 +58,9 @@ paths:
           application/json:
             schema:
               type: object
+              required:
+                - "corpus_pathname"
+                - "corpus_type"
               properties:
                 corpus_pathname:
                   type: string
@@ -77,14 +83,14 @@ components:
     CorpusPathname:
       type: string
       description: |-
-        "Full name of a corpus, specifying which namespace the corpus is under. 
-        The name takes on the format of \"<namespace_pathname>:<corpus_name>\""
+        Full name of a corpus, specifying which namespace the corpus is under. 
+        The name takes on the format of \"<namespace_pathname>:<corpus_name>\"
       example: "memas:wikipedia"
     NamespacePathname:
       type: string
       description: |-
-        "Full namespace name, where child namespaces are appended after their parents'
-        names with '.'"
+        Full namespace name, where child namespaces are appended after their parents'
+        names with '.'
       example: "memas.chatbot.persona1"
 
   responses:
