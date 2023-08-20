@@ -22,3 +22,9 @@
 [submodule "memas-sdks/ts-node"]
 	path = memas-sdks/ts-node
 	url = https://github.com/memas-ai/MeMaS-ts-sdk.git
+[submodule "memas-sdks/rust"]
+	path = memas-sdks/rust
+	url = https://github.com/memas-ai/MeMaS-rust-sdk.git
+[submodule "memas-clients/rust"]
+	path = memas-clients/rust
+	url = https://github.com/memas-ai/MeMaS-rust-client.git
