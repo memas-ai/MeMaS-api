@@ -35,12 +35,7 @@ paths:
       description: Memorize information
       operationId: remember
       requestBody:
-        description: "Remember the following information"
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CitedDocument'
-        required: true
+        $ref: '#/components/requestBodies/RememberRequest'
       responses:
         '200':
           $ref: '#/components/responses/OperationSuccess'
@@ -61,6 +56,9 @@ paths:
           application/json:
             schema:
               type: object
+              required:
+                - "clue"
+                - "corpus_pathname"
               properties:
                 clue:
                   type: string
@@ -93,6 +91,8 @@ paths:
           application/json:
             schema:
               type: object
+              required:
+                - "namespace_pathname"
               properties:
                 namespace_pathname:
                   $ref: '#/components/schemas/NamespacePathname'
@@ -113,6 +113,9 @@ paths:
           application/json:
             schema:
               type: object
+              required:
+                - "corpus_pathname"
+                - "corpus_type"
               properties:
                 corpus_pathname:
                   type: string
@@ -143,12 +146,15 @@ components:
           example: "A Memory Management Service"
     CitedDocument:
       type: object
+      required:
+        - "document"
+        - "citation"
       properties:
         document:
           type: string
           example: |-
-            "A world has two moons and three suns. And some people love dreaming 
-            during daytime."
+            A world has two moons and three suns. And some people love dreaming 
+            during daytime.
         citation:
           $ref: '#/components/schemas/Citation'
     CorpusType:
@@ -160,23 +166,32 @@ components:
     CorpusPathname:
       type: string
       description: |-
-        "Full name of a corpus, specifying which namespace the corpus is under. 
-        The name takes on the format of \"<namespace_pathname>:<corpus_name>\""
+        Full name of a corpus, specifying which namespace the corpus is under. 
+        The name takes on the format of \"<namespace_pathname>:<corpus_name>\"
       example: "memas:wikipedia"
     NamespacePathname:
       type: string
       description: |-
-        "Full namespace name, where child namespaces are appended after their parents'
-        names with '.'"
+        Full namespace name, where child namespaces are appended after their parents'
+        names with '.'
       example: "memas.chatbot.persona1"
 
-  # requestBodies:
-  #   Document:
-  #     description: Pet object that needs to be added to the store
-  #     content:
-  #       application/json:
-  #         schema:
-  #           $ref: '#/components/schemas/Citation'
+  requestBodies:
+    RememberRequest:
+      description: Request object for remembering a document
+      required: true
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/CitedDocument'
+              - type: object
+              - required:
+                  - "corpus_pathname"
+              - properties:
+                  corpus_pathname:
+                    $ref: '#/components/schemas/CorpusPathname'
+
   responses:
     OperationSuccess:
       description: "Successful Operation"

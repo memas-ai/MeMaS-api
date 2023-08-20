@@ -24,8 +24,8 @@ def cpInputSpec = "$rootDir/memas-api/cp.yml"
 def dpOutputDir = "$rootDir/memas-clients"
 def cpOutputDir = "$rootDir/memas-sdks"
 
-def clientVersion = "0.1.0"
-def sdkVersion = "0.1.0"
+def clientVersion = "0.1.1"
+def sdkVersion = "0.1.1"
 
 
 task javaClient(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
@@ -168,4 +168,21 @@ task rustSDK(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask) 
         packageName: "memas-sdk",
         packageVersion: sdkVersion,
     ])
+}
+
+
+task generateAllClients() {
+    dependsOn(pythonClient)
+    dependsOn(javaClient)
+    dependsOn(tsNodeClient)
+    dependsOn(goClient)
+    dependsOn(rustClient)
+}
+
+task generateAllSDKs() {
+    dependsOn(pythonSDK)
+    dependsOn(javaSDK)
+    dependsOn(tsNodeSDK)
+    dependsOn(goSDK)
+    dependsOn(rustSDK)
 }

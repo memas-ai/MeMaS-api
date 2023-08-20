@@ -2,7 +2,8 @@ openapi: 3.0.3
 info:
   title: MeMaS DP APIs
   description: |-
-    This is the Data Plane APIs for MeMaS (Memory Management Service).
+    This is the Data Plane client for MeMaS (Memory Management Service). 
+    See https://github.com/memas-ai/MeMaS for more details.
   # termsOfService: http://swagger.io/terms/
   contact:
     email: max.yu@memas.ai
@@ -30,12 +31,7 @@ paths:
       description: Memorize information
       operationId: remember
       requestBody:
-        description: "Remember the following information"
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CitedDocument'
-        required: true
+        $ref: '#/components/requestBodies/RememberRequest'
       responses:
         '200':
           $ref: '#/components/responses/OperationSuccess'
@@ -56,6 +52,9 @@ paths:
           application/json:
             schema:
               type: object
+              required:
+                - "clue"
+                - "corpus_pathname"
               properties:
                 clue:
                   type: string
@@ -91,20 +90,39 @@ components:
           example: "A Memory Management Service"
     CitedDocument:
       type: object
+      required:
+        - "document"
+        - "citation"
       properties:
         document:
           type: string
           example: |-
-            "A world has two moons and three suns. And some people love dreaming 
-            during daytime."
+            A world has two moons and three suns. And some people love dreaming 
+            during daytime.
         citation:
           $ref: '#/components/schemas/Citation'
     CorpusPathname:
       type: string
       description: |-
-        "Full name of a corpus, specifying which namespace the corpus is under. 
-        The name takes on the format of \"<namespace_pathname>:<corpus_name>\""
+        Full name of a corpus, specifying which namespace the corpus is under. 
+        The name takes on the format of \"<namespace_pathname>:<corpus_name>\"
       example: "memas:wikipedia"
+
+  requestBodies:
+    RememberRequest:
+      description: Request object for remembering a document
+      required: true
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/CitedDocument'
+              - type: object
+              - required:
+                  - "corpus_pathname"
+              - properties:
+                  corpus_pathname:
+                    $ref: '#/components/schemas/CorpusPathname'
 
   responses:
     OperationSuccess:
