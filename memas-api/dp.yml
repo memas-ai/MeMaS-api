@@ -54,13 +54,13 @@ paths:
               type: object
               required:
                 - "clue"
-                - "corpus_pathname"
+                - "namespace_pathname"
               properties:
                 clue:
                   type: string
                   example: "What's the weather?"
-                corpus_pathname:
-                  $ref: '#/components/schemas/CorpusPathname'
+                namespace_pathname:
+                  $ref: '#/components/schemas/NamespacePathname'
       responses:
         '200':
           description: successful operation
@@ -107,6 +107,12 @@ components:
         Full name of a corpus, specifying which namespace the corpus is under. 
         The name takes on the format of \"<namespace_pathname>:<corpus_name>\"
       example: "memas:wikipedia"
+    NamespacePathname:
+      type: string
+      description: |-
+        Full namespace name, where child namespaces are appended after their parents'
+        names with '.'
+      example: "memas.chatbot.persona1"
 
   requestBodies:
     MemorizeRequest:
