@@ -24,7 +24,7 @@ def cpInputSpec = "$rootDir/memas-api/cp.yml"
 def dpOutputDir = "$rootDir/memas-clients"
 def cpOutputDir = "$rootDir/memas-sdks"
 
-def clientVersion = "0.1.1"
+def clientVersion = "0.1.2"
 def sdkVersion = "0.1.1"
 
 

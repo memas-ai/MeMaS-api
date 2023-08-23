@@ -23,15 +23,15 @@ tags:
     #   description: Find out more about our store
     #   url: http://memas.ai
 paths:
-  /dp/remember:
+  /dp/memorize:
     post:
       tags:
         - dp
       summary: Memorize information
       description: Memorize information
-      operationId: remember
+      operationId: memorize
       requestBody:
-        $ref: '#/components/requestBodies/RememberRequest'
+        $ref: '#/components/requestBodies/MemorizeRequest'
       responses:
         '200':
           $ref: '#/components/responses/OperationSuccess'
@@ -39,13 +39,13 @@ paths:
       #   - petstore_auth:
       #       - write:pets
       #       - read:pets
-  /dp/recollect:
+  /dp/recall:
     post:
       tags:
         - dp
-      summary: Recollects
-      description: ''
-      operationId: recollect
+      summary: Recalls information
+      description: Recalls relevant information related to the given clue
+      operationId: recall
       requestBody:
         required: true
         content:
@@ -109,8 +109,8 @@ components:
       example: "memas:wikipedia"
 
   requestBodies:
-    RememberRequest:
-      description: Request object for remembering a document
+    MemorizeRequest:
+      description: Request object for memorizing a document
       required: true
       content:
         application/json:
