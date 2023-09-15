@@ -24,8 +24,8 @@ def cpInputSpec = "$rootDir/memas-api/cp.yml"
 def dpOutputDir = "$rootDir/memas-clients"
 def cpOutputDir = "$rootDir/memas-sdks"
 
-def clientVersion = "0.1.3"
-def sdkVersion = "0.1.1"
+def clientVersion = "0.1.4"
+def sdkVersion = "0.1.2"
 
 
 task javaClient(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
