@@ -126,6 +126,32 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/OperationSuccess'
+  /cp/batch_memorize:
+    post:
+      tags:
+        - cp
+      summary: memorize many information 
+      description: memorize many information 
+      operationId: batchMemorize 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - "corpus_pathname"
+                - "cited_documents"
+              properties:
+                corpus_pathname:
+                  type: string
+                  example: "memas.wikipedia"
+                  description: full corpus name
+                cited_documents:
+                    $ref: '#/components/schemas/CitedDocuments'
+      responses:
+        '200':
+          $ref: '#/components/responses/OperationSuccess'   
 
 components:
   schemas:
@@ -144,6 +170,10 @@ components:
         description:
           type: string
           example: "A Memory Management Service"
+    CitedDocuments:
+      type: array 
+      items: 
+        $ref: '#/components/schemas/CitedDocument'
     CitedDocument:
       type: object
       required:

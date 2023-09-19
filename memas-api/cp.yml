@@ -72,7 +72,35 @@ paths:
         '200':
           $ref: '#/components/responses/OperationSuccess'
 
-components:
+  /cp/batch_memorize:
+    post:
+      tags:
+        - cp
+      summary: memorize many information 
+      description: memorize many information 
+      operationId: batchMemorize 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - "corpus_pathname"
+                - "cited_documents"
+              properties:
+                corpus_pathname:
+                  type: string
+                  example: "memas.wikipedia"
+                  description: full corpus name
+                cited_documents:
+                    $ref: '#/components/schemas/CitedDocuments'
+      responses:
+        '200':
+          $ref: '#/components/responses/OperationSuccess'
+
+
+components:        
   schemas:
     CorpusType:
       type: string
@@ -80,6 +108,39 @@ components:
       enum:
         - "knowledge"
         - "conversation"
+    CitedDocuments:
+      type: array 
+      items: 
+        $ref: '#/components/schemas/CitedDocument'
+    CitedDocument:
+      type: object
+      required:
+        - "document"
+        - "citation"
+      properties:
+        document:
+          type: string
+          example: |-
+            A world has two moons and three suns. And some people love dreaming 
+            during daytime.
+        citation:
+          $ref: '#/components/schemas/Citation'
+    Citation:
+      type: object
+      properties:
+        source_uri:
+          type: string
+          example: "https://github.com/memas-ai/MeMaS"
+        source_name:
+          type: string
+          example: "github"
+        document_name:
+          type: string
+          example: "MeMaS Readme"
+        description:
+          type: string
+          example: "A Memory Management Service"
+    
     CorpusPathname:
       type: string
       description: |-
