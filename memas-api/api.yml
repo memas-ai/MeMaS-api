@@ -39,6 +39,14 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/OperationSuccess'
+        '400':
+          description: Failed operation
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/NamespaceDoesNotExistError'
+                  - $ref: '#/components/schemas/NamespaceIllegalNameError'
       # security:
       #   - petstore_auth:
       #       - write:pets
@@ -74,6 +82,14 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/CitedDocument'
+        '400':
+          description: Failed operation
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/NamespaceDoesNotExistError'
+                  - $ref: '#/components/schemas/NamespaceIllegalNameError'
       # security:
       #   - petstore_auth:
       #       - write:pets
@@ -99,6 +115,14 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/OperationSuccess'
+        '400':
+          description: Failed operation
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/NamespaceExistError'
+                  - $ref: '#/components/schemas/NamespaceIllegalNameError'
   /cp/create_corpus:
     post:
       tags:
@@ -126,6 +150,14 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/OperationSuccess'
+        '400':
+          description: Failed operation
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/NamespaceExistError'
+                  - $ref: '#/components/schemas/NamespaceIllegalNameError'
 
 components:
   schemas:
@@ -175,6 +207,55 @@ components:
         Full namespace name, where child namespaces are appended after their parents'
         names with '.'
       example: "memas.chatbot.persona1"
+    NamespaceDoesNotExistError:
+      type: object
+      description: |-
+        Error returned when the namespace object (corpus/user) does not exist
+      properties:
+        error_code:
+          type: string
+          enum: ["namespace_does_not_exist"]
+        msg:
+          type: string
+          example: "\"memas:wikipedia\" does not exists, you need to create the resource first"
+        details:
+          type: string
+      required:
+        - "error_code"
+        - "msg"
+    NamespaceExistError:
+      type: object
+      description: |-
+        Error returned when the namespace object (corpus/user) already exists
+      properties:
+        error_code:
+          type: string
+          enum: ["namespace_exists"]
+        msg:
+          type: string
+          example: "\"memas:wikipedia\" already exists"
+        details:
+          type: string
+      required:
+        - "error_code"
+        - "msg"
+    NamespaceIllegalNameError:
+      type: object
+      description: |-
+        Error returned when the namespace name format/style is not allowed
+      properties:
+        error_code:
+          type: string
+          enum: ["namespace_illegal_name"]
+        msg:
+          type: string
+          example: "\"memas!wikipedia\" is not a valid pathname"
+        details:
+          type: string
+      required:
+        - "error_code"
+        - "msg"
+
 
   requestBodies:
     MemorizeRequest:
