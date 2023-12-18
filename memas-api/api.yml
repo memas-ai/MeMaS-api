@@ -3,13 +3,14 @@ info:
   title: MeMaS APIs
   description: |-
     This is the Control Plane and Data Plane APIs for MeMaS (Memory Management Service).
+    See https://github.com/memas-ai/MeMaS for more details.
   # termsOfService: http://swagger.io/terms/
   contact:
     email: max.yu@memas.ai
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 0.1.0
+  version: 0.1.1
 externalDocs:
   description: Find out more about MeMaS
   url: http://memas.ai
@@ -35,7 +36,18 @@ paths:
       description: Memorize information
       operationId: memorize
       requestBody:
-        $ref: '#/components/requestBodies/MemorizeRequest'
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/CitedDocument'
+                - type: object
+                - required:
+                    - "corpus_pathname"
+                - properties:
+                    corpus_pathname:
+                      $ref: '#/components/schemas/CorpusPathname'
       responses:
         '200':
           $ref: '#/components/responses/OperationSuccess'
@@ -52,7 +64,7 @@ paths:
       #       - write:pets
       #       - read:pets
   /dp/recall:
-    post:
+    get:
       tags:
         - dp
       summary: Recalls information
@@ -94,7 +106,7 @@ paths:
       #   - petstore_auth:
       #       - write:pets
       #       - read:pets
-  /cp/create_user:
+  /cp/user:
     post:
       tags:
         - cp
@@ -123,7 +135,33 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/NamespaceExistError'
                   - $ref: '#/components/schemas/NamespaceIllegalNameError'
-  /cp/create_corpus:
+    delete:
+      tags:
+        - cp
+      summary: Delete user
+      description: Delete a namespace user
+      operationId: deleteUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - "namespace_pathname"
+              properties:
+                namespace_pathname:
+                  $ref: '#/components/schemas/NamespacePathname'
+      responses:
+        '200':
+          $ref: '#/components/responses/OperationSuccess'
+        '400':
+          description: Failed operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NamespaceDoesNotExistError'
+  /cp/corpus:
     post:
       tags:
         - cp
@@ -138,13 +176,14 @@ paths:
             schema:
               type: object
               required:
+                - "namespace_pathname"
                 - "corpus_pathname"
                 - "corpus_type"
               properties:
+                namespace_pathname:
+                  $ref: '#/components/schemas/NamespacePathname'
                 corpus_pathname:
-                  type: string
-                  example: "memas.wikipedia"
-                  description: full corpus name
+                  $ref: '#/components/schemas/CorpusPathname'
                 corpus_type:
                   $ref: '#/components/schemas/CorpusType'
       responses:
@@ -158,6 +197,36 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/NamespaceExistError'
                   - $ref: '#/components/schemas/NamespaceIllegalNameError'
+    delete:
+      tags:
+        - cp
+      summary: Delete corpus
+      description: Delete a corpus under a namespace
+      operationId: deleteCorpus
+      requestBody:
+        # description: Deleted user object
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - "namespace_pathname"
+                - "corpus_pathname"
+              properties:
+                namespace_pathname:
+                  $ref: '#/components/schemas/NamespacePathname'
+                corpus_pathname:
+                  $ref: '#/components/schemas/CorpusPathname'
+      responses:
+        '200':
+          $ref: '#/components/responses/OperationSuccess'
+        '400':
+          description: Failed operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NamespaceDoesNotExistError'
 
 components:
   schemas:
@@ -255,23 +324,6 @@ components:
       required:
         - "error_code"
         - "msg"
-
-
-  requestBodies:
-    MemorizeRequest:
-      description: Request object for memorizing a document
-      required: true
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: '#/components/schemas/CitedDocument'
-              - type: object
-              - required:
-                  - "corpus_pathname"
-              - properties:
-                  corpus_pathname:
-                    $ref: '#/components/schemas/CorpusPathname'
 
   responses:
     OperationSuccess:
