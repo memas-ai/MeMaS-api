@@ -10,7 +10,7 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 0.1.0
+  version: 0.1.1
 externalDocs:
   description: Find out more about MeMaS
   url: http://memas.ai
@@ -31,7 +31,18 @@ paths:
       description: Memorize information
       operationId: memorize
       requestBody:
-        $ref: '#/components/requestBodies/MemorizeRequest'
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/CitedDocument'
+                - type: object
+                - required:
+                    - "corpus_pathname"
+                - properties:
+                    corpus_pathname:
+                      $ref: '#/components/schemas/CorpusPathname'
       responses:
         '200':
           $ref: '#/components/responses/OperationSuccess'
@@ -48,7 +59,7 @@ paths:
       #       - write:pets
       #       - read:pets
   /dp/recall:
-    post:
+    get:
       tags:
         - dp
       summary: Recalls information
@@ -161,23 +172,6 @@ components:
       required:
         - "error_code"
         - "msg"
-
-
-  requestBodies:
-    MemorizeRequest:
-      description: Request object for memorizing a document
-      required: true
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: '#/components/schemas/CitedDocument'
-              - type: object
-              - required:
-                  - "corpus_pathname"
-              - properties:
-                  corpus_pathname:
-                    $ref: '#/components/schemas/CorpusPathname'
 
   responses:
     OperationSuccess:
